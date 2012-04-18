@@ -10,14 +10,13 @@ import gtk, webkit, os
 class ExampleEditor(gtk.Window):
   def __init__(self):
     gtk.Window.__init__(self)
-    self.set_title("Example Editor")
+    self.set_title("Git Note")
     self.connect("destroy", gtk.main_quit)
     self.resize(500, 500)
-    self.filename = None
 
     self.editor = webkit.WebView()
     self.editor.set_editable(True)
-    self.editor.load_html_string("This is a test", "file:///")
+    self.editor.load_html_string("", "file:///")
 
     scroll = gtk.ScrolledWindow()
     scroll.add(self.editor)
@@ -40,18 +39,10 @@ class ExampleEditor(gtk.Window):
     ui_def = """
     <ui>
       <menubar name="menubar_main">
-        <menu action="menuFile">
-          <menuitem action="new" />
-          <menuitem action="open" />
-          <menuitem action="save" />
-        </menu>
         <menu action="menuEdit">
           <menuitem action="cut" />
           <menuitem action="copy" />
           <menuitem action="paste" />
-        </menu>
-        <menu action="menuInsert">
-          <menuitem action="insertimage" />
         </menu>
         <menu action="menuFormat">
           <menuitem action="bold" />
@@ -69,10 +60,6 @@ class ExampleEditor(gtk.Window):
         </menu>
       </menubar>
       <toolbar name="toolbar_main">
-        <toolitem action="new" />
-        <toolitem action="open" />
-        <toolitem action="save" />
-        <separator />
         <toolitem action="undo" />
         <toolitem action="redo" />
         <separator />
@@ -93,23 +80,15 @@ class ExampleEditor(gtk.Window):
         <toolitem action="justifyright" />
         <toolitem action="justifycenter" />
         <toolitem action="justifyfull" />
-        <separator />
-        <toolitem action="insertimage" />
-        <toolitem action="insertlink" />
       </toolbar>
     </ui>
     """
 
     actions = gtk.ActionGroup("Actions")
     actions.add_actions([
-      ("menuFile", None, "_File"),
       ("menuEdit", None, "_Edit"),
       ("menuInsert", None, "_Insert"),
       ("menuFormat", None, "_Format"),
-
-      ("new", gtk.STOCK_NEW, "_New", None, None, self.on_new),
-      ("open", gtk.STOCK_OPEN, "_Open", None, None, self.on_open),
-      ("save", gtk.STOCK_SAVE, "_Save", None, None, self.on_save),
 
       ("undo", gtk.STOCK_UNDO, "_Undo", None, None, self.on_action),
       ("redo", gtk.STOCK_REDO, "_Redo", None, None, self.on_action),
@@ -130,12 +109,7 @@ class ExampleEditor(gtk.Window):
       ("justifycenter", gtk.STOCK_JUSTIFY_CENTER, "Justify _Center", None, None, self.on_action),
       ("justifyfull", gtk.STOCK_JUSTIFY_FILL, "Justify _Full", None, None, self.on_action),
 
-      ("insertimage", "insert-image", "Insert _Image", None, None, self.on_insert_image),
-      ("insertlink", "insert-link", "Insert _Link", None, None, self.on_insert_link),
     ])
-
-    actions.get_action("insertimage").set_property("icon-name", "insert-image")
-    actions.get_action("insertlink").set_property("icon-name", "insert-link")
 
     ui = gtk.UIManager()
     ui.insert_action_group(actions)
@@ -148,9 +122,6 @@ class ExampleEditor(gtk.Window):
 
   def on_paste(self, action):
     self.editor.paste_clipboard()
-
-  def on_new(self, action):
-    self.editor.load_html_string("", "file:///")
 
   def on_select_font(self, action):
     dialog = gtk.FontSelectionDialog("Select a font")
@@ -167,54 +138,6 @@ class ExampleEditor(gtk.Window):
       color = "#" + "".join([gc[1:3], gc[5:7], gc[9:11]])
       self.editor.execute_script("document.execCommand('forecolor', null, '%s');" % color)
     dialog.destroy()
-
-  def on_insert_link(self, action):
-    dialog = gtk.Dialog("Enter a URL:", self, 0,
-      (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
-
-    entry = gtk.Entry()
-    dialog.vbox.pack_start(entry)
-    dialog.show_all()
-
-    if dialog.run() == gtk.RESPONSE_OK:
-      self.editor.execute_script(
-        "document.execCommand('createLink', true, '%s');" % entry.get_text())
-    dialog.destroy()
-
-  def on_insert_image(self, action):
-    dialog = gtk.FileChooserDialog("Select an image file", self, gtk.FILE_CHOOSER_ACTION_OPEN,
-      (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-
-    if dialog.run() == gtk.RESPONSE_OK:
-      fn = dialog.get_filename()
-      if os.path.exists(fn):
-        self.editor.execute_script(
-          "document.execCommand('insertImage', null, '%s');" % fn)
-    dialog.destroy()
-
-  def on_open(self, action):
-    dialog = gtk.FileChooserDialog("Select an HTML file", self, gtk.FILE_CHOOSER_ACTION_OPEN,
-      (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-
-    if dialog.run() == gtk.RESPONSE_OK:
-      fn = dialog.get_filename()
-      if os.path.exists(fn):
-        self.filename = fn
-        with open(fn) as fd:
-          self.editor.load_html_string(fd.read(), "file:///")
-    dialog.destroy()
-
-  def on_save(self, action):
-    if self.filename:
-      with open(self.filename) as fd: fd.write(self.get_html())
-    else:
-      dialog = gtk.FileChooserDialog("Select an HTML file", self, gtk.FILE_CHOOSER_ACTION_SAVE,
-        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-
-      if dialog.run() == gtk.RESPONSE_OK:
-        self.filename = dialog.get_filename()
-        with open(self.filename, "w+") as fd: fd.write(self.get_html())
-      dialog.destroy()
 
   def get_html(self):
     self.editor.execute_script("document.title=document.documentElement.innerHTML;")
