@@ -1,4 +1,5 @@
 import os
+import re
 import uuid
 
 class Note(object):
@@ -26,5 +27,8 @@ class Note(object):
         return self.html
 
     def set_html(self, value):
-        # TODO munge here: new lines & contenteditable
-        self.html = value	
+        value = re.sub(r"([^\n])<", lambda i: "%s\n<" % i.groups()[0].rstrip(),
+                       value)
+        value = re.sub(r">([^\n])", lambda i: ">\n%s" % i.groups()[0].lstrip(),
+                       value)
+        self.html = value
