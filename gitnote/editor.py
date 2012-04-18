@@ -1,13 +1,11 @@
-#!/usr/bin/env python
-
 #
 # Example Text Editor
 # Ryan Paul (SegPhault) - 07/12/2009
 #
 
-import gtk, webkit, os
+import gtk, webkit
 
-class ExampleEditor(gtk.Window):
+class Editor(gtk.Window):
   def __init__(self):
     gtk.Window.__init__(self)
     self.set_title("Git Note")
@@ -155,9 +153,5 @@ class ExampleEditor(gtk.Window):
     self.editor.execute_script("document.title=document.documentElement" \
                                ".innerHTML;")
     return self.editor.get_main_frame().get_title()
-
-e = ExampleEditor()
-e.show_all()
-gtk.main()
 
 
