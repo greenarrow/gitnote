@@ -10,13 +10,13 @@ class Editor(gtk.Window):
     self.note = note
 
     gtk.Window.__init__(self)
-    self.set_title("Git Note")
+    self.set_title(note.get_title())
     self.connect("destroy", gtk.main_quit)
     self.resize(500, 500)
 
     self.editor = webkit.WebView()
     self.editor.set_editable(True)
-    self.editor.load_html_string("", "file:///")
+    self.editor.load_html_string(note.get_html(), "file:///")
 
     scroll = gtk.ScrolledWindow()
     scroll.add(self.editor)
