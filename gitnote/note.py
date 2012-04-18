@@ -20,4 +20,10 @@ class Note(object):
 
     def get_title(self):
         return self.title
-	
+
+    def get_html(self):
+        return self.html
+
+    def set_html(self, value):
+        # TODO munge here: new lines & contenteditable
+        self.html = value	
