@@ -6,7 +6,9 @@
 import gtk, webkit
 
 class Editor(gtk.Window):
-  def __init__(self):
+  def __init__(self, note):
+    self.note = note
+
     gtk.Window.__init__(self)
     self.set_title("Git Note")
     self.connect("destroy", gtk.main_quit)
