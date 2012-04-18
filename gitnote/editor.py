@@ -119,10 +119,16 @@ class Editor(gtk.Window):
 
     ])
 
+    self.connect("delete_event", self.on_delete)
+
     ui = gtk.UIManager()
     ui.insert_action_group(actions)
     ui.add_ui_from_string(ui_def)
     return ui
+
+  def on_delete(widget, event, data=None):
+    widget.note.set_html(widget.get_html())
+    widget.note.save()
 
   def on_action(self, action):
     self.editor.execute_script(
