@@ -99,15 +99,23 @@ class ExampleEditor(gtk.Window):
 
       ("bold", gtk.STOCK_BOLD, "_Bold", "<ctrl>B", None, self.on_action),
       ("italic", gtk.STOCK_ITALIC, "_Italic", "<ctrl>I", None, self.on_action),
-      ("underline", gtk.STOCK_UNDERLINE, "_Underline", "<ctrl>U", None, self.on_action),
-      ("strikethrough", gtk.STOCK_STRIKETHROUGH, "_Strike", "<ctrl>T", None, self.on_action),
-      ("font", gtk.STOCK_SELECT_FONT, "Select _Font", "<ctrl>F", None, self.on_select_font),
-      ("color", gtk.STOCK_SELECT_COLOR, "Select _Color", None, None, self.on_select_color),
+      ("underline", gtk.STOCK_UNDERLINE, "_Underline", "<ctrl>U", None,
+       self.on_action),
+      ("strikethrough", gtk.STOCK_STRIKETHROUGH, "_Strike", "<ctrl>T", None,
+       self.on_action),
+      ("font", gtk.STOCK_SELECT_FONT, "Select _Font", "<ctrl>F", None,
+       self.on_select_font),
+      ("color", gtk.STOCK_SELECT_COLOR, "Select _Color", None, None,
+       self.on_select_color),
 
-      ("justifyleft", gtk.STOCK_JUSTIFY_LEFT, "Justify _Left", None, None, self.on_action),
-      ("justifyright", gtk.STOCK_JUSTIFY_RIGHT, "Justify _Right", None, None, self.on_action),
-      ("justifycenter", gtk.STOCK_JUSTIFY_CENTER, "Justify _Center", None, None, self.on_action),
-      ("justifyfull", gtk.STOCK_JUSTIFY_FILL, "Justify _Full", None, None, self.on_action),
+      ("justifyleft", gtk.STOCK_JUSTIFY_LEFT, "Justify _Left", None, None,
+       self.on_action),
+      ("justifyright", gtk.STOCK_JUSTIFY_RIGHT, "Justify _Right", None, None,
+       self.on_action),
+      ("justifycenter", gtk.STOCK_JUSTIFY_CENTER, "Justify _Center", None, None,
+       self.on_action),
+      ("justifyfull", gtk.STOCK_JUSTIFY_FILL, "Justify _Full", None, None,
+       self.on_action),
 
     ])
 
@@ -126,9 +134,12 @@ class ExampleEditor(gtk.Window):
   def on_select_font(self, action):
     dialog = gtk.FontSelectionDialog("Select a font")
     if dialog.run() == gtk.RESPONSE_OK:
-      fname, fsize = dialog.fontsel.get_family().get_name(), dialog.fontsel.get_size()
-      self.editor.execute_script("document.execCommand('fontname', null, '%s');" % fname)
-      self.editor.execute_script("document.execCommand('fontsize', null, '%s');" % fsize)
+      fname = dialog.fontsel.get_family().get_name()
+      fsize = dialog.fontsel.get_size()
+      self.editor.execute_script("document.execCommand('fontname', null, '%s');"
+                                 % fname)
+      self.editor.execute_script("document.execCommand('fontsize', null, '%s');"
+                                 % fsize)
     dialog.destroy()
 
   def on_select_color(self, action):
@@ -136,11 +147,13 @@ class ExampleEditor(gtk.Window):
     if dialog.run() == gtk.RESPONSE_OK:
       gc = str(dialog.colorsel.get_current_color())
       color = "#" + "".join([gc[1:3], gc[5:7], gc[9:11]])
-      self.editor.execute_script("document.execCommand('forecolor', null, '%s');" % color)
+      self.editor.execute_script("document.execCommand('forecolor', null, " \
+                                 "'%s');" % color)
     dialog.destroy()
 
   def get_html(self):
-    self.editor.execute_script("document.title=document.documentElement.innerHTML;")
+    self.editor.execute_script("document.title=document.documentElement" \
+                               ".innerHTML;")
     return self.editor.get_main_frame().get_title()
 
 e = ExampleEditor()
