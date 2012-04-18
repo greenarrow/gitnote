@@ -2,8 +2,9 @@ import os
 import uuid
 
 class Note(object):
-    html = ""
     title = "New Note"
+    html = "<html>\n<head>\n<title>\n%s\n</title>\n</head>\n" \
+           "<body contenteditable=\"true\">\ntest\n</body>\n</html>" % title
 
     def __init__(self, filename):
         self.filename = filename
