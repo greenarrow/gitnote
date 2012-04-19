@@ -2,7 +2,24 @@ import os
 import re
 import uuid
 
-class Note(object):
+
+class MetaNote(object):
+    def __init__(self, filename):
+        self.filename = filename
+        self._read_meta(open(self.filename).read())
+
+    def _read_meta(self, html):
+        result = re.findall(r"<head>.*<title>(.*)</title>.*</head>", html,
+                            re.DOTALL)
+        assert len(result) == 1
+
+        self.title = result[0].strip()
+
+    def get_title(self):
+        return self.title
+
+
+class Note(MetaNote):
     title = "New Note"
     html = "<html>\n<head>\n<title>\n%s\n</title>\n</head>\n" \
            "<body contenteditable=\"true\">\ntest\n</body>\n</html>" % title
@@ -14,12 +31,7 @@ class Note(object):
             return
 
         self.html = open(filename).read()
-
-        result = re.findall(r"<head>.*<title>(.*)</title>.*</head>", self.html,
-                            re.DOTALL)
-        assert len(result) == 1
-
-        self.title = result[0].strip()
+        self._read_meta(self.html)
 
     @staticmethod
     def create():
@@ -27,9 +39,6 @@ class Note(object):
                     "%s.note" % uuid.uuid4()))
     def save(self):
        open(self.filename, "w").write(self.html)
-
-    def get_title(self):
-        return self.title
 
     def get_html(self):
         return self.html
