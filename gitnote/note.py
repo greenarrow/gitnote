@@ -23,7 +23,7 @@ class Note(object):
 
     @staticmethod
     def create():
-        return Note(os.path.join(os.path.expanduser("~"), ".gitnote",
+        return Note(os.path.join(os.path.expanduser("~"), ".gitnote", "notes",
                     "%s.note" % uuid.uuid4()))
     def save(self):
        open(self.filename, "w").write(self.html)
