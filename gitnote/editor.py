@@ -11,7 +11,6 @@ class Editor(gtk.Window):
 
     gtk.Window.__init__(self)
     self.set_title(note.get_title())
-    self.connect("destroy", gtk.main_quit)
     self.resize(500, 500)
 
     self.editor = webkit.WebView()
