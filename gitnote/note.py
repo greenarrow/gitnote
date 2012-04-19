@@ -10,8 +10,16 @@ class Note(object):
     def __init__(self, filename):
         self.filename = filename
 
-        if os.path.exists(filename):
-            self.html = open(filename).read()
+        if not os.path.exists(filename):
+            return
+
+        self.html = open(filename).read()
+
+        result = re.findall(r"<head>.*<title>(.*)</title>.*</head>", self.html,
+                            re.DOTALL)
+        assert len(result) == 1
+
+        self.title = result[0].strip()
 
     @staticmethod
     def create():
