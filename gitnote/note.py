@@ -37,6 +37,11 @@ class Note(MetaNote):
     def create():
         return Note(os.path.join(os.path.expanduser("~"), ".gitnote", "notes",
                     "%s.note" % uuid.uuid4()))
+
+    @staticmethod
+    def from_meta(meta):
+        return Note(meta.filename)
+
     def save(self):
        open(self.filename, "w").write(self.html)
 
