@@ -7,6 +7,7 @@ class MetaNote(object):
     def __init__(self, filename):
         self.filename = filename
         self._read_meta(open(self.filename).read())
+        self._read_mtime()
 
     def _read_meta(self, html):
         result = re.findall(r"<head>.*<title>(.*)</title>.*</head>", html,
@@ -15,8 +16,14 @@ class MetaNote(object):
 
         self.title = result[0].strip()
 
+    def _read_mtime(self):
+        self.mtime = os.stat(self.filename).st_mtime
+
     def get_title(self):
         return self.title
+
+    def get_mtime(self):
+        return self.mtime
 
 
 class Note(MetaNote):
@@ -32,6 +39,7 @@ class Note(MetaNote):
 
         self.html = open(filename).read()
         self._read_meta(self.html)
+        self._read_mtime()
 
     @staticmethod
     def create():
@@ -44,6 +52,7 @@ class Note(MetaNote):
 
     def save(self):
        open(self.filename, "w").write(self.html)
+       self._read_mtime()
 
     def get_html(self):
         return self.html
