@@ -1,5 +1,8 @@
 import gtk
 
+from editor import Editor
+from note import Note
+
 
 class Tray(object):
     def __init__(self, catalogue):
@@ -31,6 +34,8 @@ class Tray(object):
                    gtk.get_current_event_time())
 
     def on_click_note(self, item, note):
-        print note.get_title()
+        n = Note.from_meta(note)
+        e = Editor(n)
+        e.show_all()
 
 
