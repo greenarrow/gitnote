@@ -19,6 +19,10 @@ class Tray(object):
 
         menu = gtk.Menu()
 
+        new = gtk.MenuItem("Create &New Note")
+        new.connect("activate", self.on_click_new_note)
+        menu.append(new)
+
         for note in self.catalogue.get_notes():
             item = gtk.MenuItem(note.get_title())
             item.connect("activate", self.on_click_note, note)
@@ -38,4 +42,9 @@ class Tray(object):
         e = Editor(n)
         e.show_all()
 
+    def on_click_new_note(self, item):
+        n = Note.create(self.catalogue.get_new_title())
+        self.catalogue.append(n)
+        e = Editor(n)
+        e.show_all()
 
