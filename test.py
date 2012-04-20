@@ -24,7 +24,8 @@ if __name__ == "__main__":
         sys.exit(0)
 
     elif sys.argv[1] == "new":
-        n = Note.create()
+        c = Catalogue(PATH_NOTES)
+        n = Note.create(c.get_new_title())
         e = Editor(n)
         e.show_all()
 

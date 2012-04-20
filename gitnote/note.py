@@ -22,14 +22,16 @@ class MetaNote(object):
     def get_title(self):
         return self.title
 
+    def set_title(self, title):
+        self.title = title
+
     def get_mtime(self):
         return self.mtime
 
 
 class Note(MetaNote):
     title = "New Note"
-    html = "<html>\n<head>\n<title>\n%s\n</title>\n</head>\n" \
-           "<body contenteditable=\"true\">\ntest\n</body>\n</html>" % title
+
 
     def __init__(self, filename):
         self.filename = filename
@@ -42,9 +44,16 @@ class Note(MetaNote):
         self._read_mtime()
 
     @staticmethod
-    def create():
-        return Note(os.path.join(os.path.expanduser("~"), ".gitnote", "notes",
-                    "%s.note" % uuid.uuid4()))
+    def create(title):
+        n = Note(os.path.join(os.path.expanduser("~"), ".gitnote", "notes",
+                 "%s.note" % uuid.uuid4()))
+
+        n.set_html("<html><head><title>%s</title></head>" \
+                   "<body contenteditable=\"true\"></body></html>" % title)
+
+        n.set_title(title)
+
+        return n
 
     @staticmethod
     def from_meta(meta):
