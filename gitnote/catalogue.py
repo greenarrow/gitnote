@@ -8,6 +8,17 @@ class Catalogue(object):
         self.notes = map(note.MetaNote, glob.glob(os.path.join(path, "*.note")))
         self.notes.sort(key=lambda n: n.get_mtime(), reverse=True)
 
+    def get_new_title(self):
+        titles = self.get_titles()
+        new = "New Note"
+
+        i = 2
+        while new in titles:
+            new = "New Note %d" % i
+            i += 1
+
+        return new
+
     def get_notes(self):
         return self.notes
 
