@@ -100,7 +100,7 @@ class Editor(gtk.Window):
       ("italic", gtk.STOCK_ITALIC, "_Italic", "<ctrl>I", None, self.on_action),
       ("underline", gtk.STOCK_UNDERLINE, "_Underline", "<ctrl>U", None,
        self.on_action),
-      ("strikethrough", gtk.STOCK_STRIKETHROUGH, "_Strike", "<ctrl>T", None,
+      ("strikethrough", gtk.STOCK_STRIKETHROUGH, "_Strike", "<ctrl>S", None,
        self.on_action),
       ("font", gtk.STOCK_SELECT_FONT, "Select _Font", "<ctrl>F", None,
        self.on_select_font),
