@@ -2,7 +2,7 @@ import gtk
 
 from editor import Editor
 from note import Note
-
+# TODO right click menu
 
 class Tray(object):
     def __init__(self, catalogue):
@@ -15,6 +15,8 @@ class Tray(object):
         self.statusicon.connect("activate", self.on_activate)
 
     def on_activate(self, thing):
+        self.catalogue.sort()
+
         rect = self.statusicon.get_geometry()[1]
 
         menu = gtk.Menu()
