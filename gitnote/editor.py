@@ -23,12 +23,10 @@ class Editor(gtk.Window):
 
     self.ui = self.generate_ui()
     self.add_accel_group(self.ui.get_accel_group())
-    self.toolbar1 = self.ui.get_widget("/toolbar_main")
-    self.toolbar2 = self.ui.get_widget("/toolbar_format")
+    self.toolbar = self.ui.get_widget("/toolbar_main")
 
     self.layout = gtk.VBox()
-    self.layout.pack_start(self.toolbar1, False)
-    self.layout.pack_start(self.toolbar2, False)
+    self.layout.pack_start(self.toolbar, False)
     self.layout.pack_start(scroll, True, True)
     self.add(self.layout)
 
@@ -42,8 +40,7 @@ class Editor(gtk.Window):
         <toolitem action="cut" />
         <toolitem action="copy" />
         <toolitem action="paste" />
-      </toolbar>
-      <toolbar name="toolbar_format">
+        <separator />
         <toolitem action="bold" />
         <toolitem action="italic" />
         <toolitem action="underline" />
