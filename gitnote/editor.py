@@ -25,10 +25,8 @@ class Editor(gtk.Window):
     self.add_accel_group(self.ui.get_accel_group())
     self.toolbar1 = self.ui.get_widget("/toolbar_main")
     self.toolbar2 = self.ui.get_widget("/toolbar_format")
-    self.menubar = self.ui.get_widget("/menubar_main")
 
     self.layout = gtk.VBox()
-    self.layout.pack_start(self.menubar, False)
     self.layout.pack_start(self.toolbar1, False)
     self.layout.pack_start(self.toolbar2, False)
     self.layout.pack_start(scroll, True, True)
@@ -37,27 +35,6 @@ class Editor(gtk.Window):
   def generate_ui(self):
     ui_def = """
     <ui>
-      <menubar name="menubar_main">
-        <menu action="menuEdit">
-          <menuitem action="cut" />
-          <menuitem action="copy" />
-          <menuitem action="paste" />
-        </menu>
-        <menu action="menuFormat">
-          <menuitem action="bold" />
-          <menuitem action="italic" />
-          <menuitem action="underline" />
-          <menuitem action="strikethrough" />
-          <separator />
-          <menuitem action="font" />
-          <menuitem action="color" />
-          <separator />
-          <menuitem action="justifyleft" />
-          <menuitem action="justifyright" />
-          <menuitem action="justifycenter" />
-          <menuitem action="justifyfull" />
-        </menu>
-      </menubar>
       <toolbar name="toolbar_main">
         <toolitem action="undo" />
         <toolitem action="redo" />
@@ -85,10 +62,6 @@ class Editor(gtk.Window):
 
     actions = gtk.ActionGroup("Actions")
     actions.add_actions([
-      ("menuEdit", None, "_Edit"),
-      ("menuInsert", None, "_Insert"),
-      ("menuFormat", None, "_Format"),
-
       ("undo", gtk.STOCK_UNDO, "_Undo", None, None, self.on_action),
       ("redo", gtk.STOCK_REDO, "_Redo", None, None, self.on_action),
 
