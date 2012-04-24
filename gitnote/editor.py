@@ -54,6 +54,11 @@ class Editor(gtk.Window):
         <toolitem action="justifycenter" />
         <toolitem action="justifyfull" />
       </toolbar>
+      <accelerator action="bold" />
+      <accelerator action="italic" />
+      <accelerator action="underline" />
+      <accelerator action="strikethrough" />
+      <accelerator action="font" />
     </ui>
     """
 
