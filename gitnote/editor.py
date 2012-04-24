@@ -53,12 +53,15 @@ class Editor(gtk.Window):
         <toolitem action="justifyright" />
         <toolitem action="justifycenter" />
         <toolitem action="justifyfull" />
+        <separator />
+        <toolitem action="insertunorderedlist" />
       </toolbar>
       <accelerator action="bold" />
       <accelerator action="italic" />
       <accelerator action="underline" />
       <accelerator action="strikethrough" />
       <accelerator action="font" />
+      <accelerator action="insertunorderedlist" />
     </ui>
     """
 
@@ -90,6 +93,9 @@ class Editor(gtk.Window):
        self.on_action),
       ("justifyfull", gtk.STOCK_JUSTIFY_FILL, "Justify _Full", None, None,
        self.on_action),
+
+      ("insertunorderedlist", gtk.STOCK_INDEX, "Insert _UnorderedList",
+       "<alt>Right", None, self.on_action),
 
     ])
 
