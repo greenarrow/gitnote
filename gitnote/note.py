@@ -34,6 +34,9 @@ class MetaNote(object):
     def get_mtime(self):
         return self.mtime
 
+    def get_filename(self):
+        return self.filename
+
 
 class Note(MetaNote):
     title = "New Note"
