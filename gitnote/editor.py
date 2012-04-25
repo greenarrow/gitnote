@@ -6,7 +6,8 @@
 import gtk, webkit
 
 class Editor(gtk.Window):
-  def __init__(self, note):
+  def __init__(self, note, catalogue=None):
+    self.catalogue = catalogue
     self.note = note
 
     gtk.Window.__init__(self)
@@ -106,9 +107,12 @@ class Editor(gtk.Window):
     ui.add_ui_from_string(ui_def)
     return ui
 
-  def on_delete(widget, event, data=None):
-    widget.note.set_html(widget.get_html())
-    widget.note.save()
+  def on_delete(self, event, data=None):
+    self.note.set_html(self.get_html())
+    self.note.save()
+
+    if self.catalogue is not None:
+      self.catalogue.commit(self.note)
 
   def on_action(self, action):
     self.editor.execute_script(
