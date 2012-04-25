@@ -41,12 +41,12 @@ class Tray(object):
 
     def on_click_note(self, item, note):
         n = Note.from_meta(note)
-        e = Editor(n)
+        e = Editor(n, self.catalogue)
         e.show_all()
 
     def on_click_new_note(self, item):
         n = Note.create(self.catalogue.get_new_title())
         self.catalogue.append(n)
-        e = Editor(n)
+        e = Editor(n, self.catalogue)
         e.show_all()
 

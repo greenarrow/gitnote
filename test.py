@@ -30,9 +30,10 @@ if __name__ == "__main__":
         e.show_all()
 
     elif sys.argv[1] == "load":
+        c = Catalogue(PATH_NOTES)
         for arg in sys.argv[2:]:
             n = Note(arg)
-            e = Editor(n)
+            e = Editor(n, c)
             e.show_all()
 
     elif sys.argv[1] =="tray":
