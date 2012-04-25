@@ -1,12 +1,17 @@
 import os
 import glob
 import note
+import git
 
 
 class Catalogue(object):
     def __init__(self, path):
         self.notes = map(note.MetaNote, glob.glob(os.path.join(path, "*.note")))
         self.sort()
+
+        self.repo = git.Repository(path)
+        if not self.repo.exists():
+            self.repo.init()
 
     def sort(self):
         self.notes.sort(key=lambda n: n.get_mtime(), reverse=True)
