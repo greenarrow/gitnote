@@ -4,6 +4,12 @@ import uuid
 
 
 class MetaNote(object):
+    __slots__ = (
+        "filename",
+        "title",
+        "mtime",
+    )
+
     def __init__(self, filename):
         self.filename = filename
         self._read_meta(open(self.filename).read())
