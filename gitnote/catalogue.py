@@ -20,8 +20,9 @@ class Catalogue(object):
         self.notes.append(note)
 
     def commit(self, note):
-        self.repo.add(note.get_filename())
-        self.repo.commit()
+        if len(self.repo.diff(note.get_filename())):
+            self.repo.add(note.get_filename())
+            self.repo.commit()
 
     def get_new_title(self):
         titles = self.get_titles()
