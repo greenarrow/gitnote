@@ -76,6 +76,9 @@ class Note(MetaNote):
         return self.html
 
     def set_html(self, value):
+        value = re.sub(r"(<title>).*(</title>)",
+                       lambda i: "".join((i.groups()[0], self.title,
+                                          i.groups()[1])), value)
         value = re.sub(r"([^\n])<", lambda i: "%s\n<" % i.groups()[0].rstrip(),
                        value)
         value = re.sub(r">([^\n])", lambda i: ">\n%s" % i.groups()[0].lstrip(),
